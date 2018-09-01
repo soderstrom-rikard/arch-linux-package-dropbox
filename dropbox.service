@@ -2,10 +2,12 @@
 Description=Dropbox
 
 [Service]
-Type=simple
+Type=forking
+PIDFile=/home/%I/.dropbox/dropbox.pid
 ExecStart=/usr/bin/dropbox
-ExecReload=/bin/kill -HUP $MAINPID
-KillMode=process
+ExecStopPost=/bin/rm /home/%I/.dropbox/dropbox.pid
+ExecReload=/bin/kill -HUP /home/%I/.dropbox/dropbox.pid
+SuccessExitStatus=9 SIGKILL
 Restart=on-failure
 
 [Install]
